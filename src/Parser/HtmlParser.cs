@@ -18,13 +18,18 @@ namespace Parser
             
 
         }
+
+        private void LoadEachFileToMemortyForReading()
+        {
+            throw new NotImplementedException();
+        }
         /// <summary>
         /// This will load the file names in the specified folder location
         /// </summary>
         /// <returns></returns>
         public IEnumerable<string> GetFileNames()
         {
-        
+            throw new NotImplementedException();
         }
 
 
