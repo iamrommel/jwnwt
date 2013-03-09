@@ -15,7 +15,7 @@ namespace Parser
         {
             var path = @"C:\Personal\GitHub\jwnwt\lib\raw\05_BI12_.GE.xhtml";
             var stream = new StreamReader(path);
-            XmlTextReader xmlReader = new XmlTextReader(stream);
+            var xmlReader = new XmlTextReader(stream);
             xmlReader.DtdProcessing = DtdProcessing.Ignore;
             xmlReader.XmlResolver = null;
 
