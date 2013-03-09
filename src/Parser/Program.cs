@@ -9,6 +9,8 @@ namespace Parser
     {
         static void Main(string[] args)
         {
+
+            new HtmlParser().Run();
         }
     }
 }
