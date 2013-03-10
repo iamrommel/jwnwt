@@ -60,7 +60,6 @@
     <Content Include="cordova-2.3.0.js" />
     <Content Include="css\index.css" />
     <Content Include="img\bi12_E.jpg" />
-    <Content Include="img\logo.png" />
     <Content Include="index.html" />
     <Content Include="js\index.js" />
     <Content Include="js\jquery-1.9.1.min.js" />

@@ -16,7 +16,9 @@
         function onSearchBibleText() {
              $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
 
-                 $('#chapter11_verse20').parent().toggleClass('selected');
+                
+                 $("#chapter11_verse20").nextUntil("a")
+                        .toggleClass('selected');
                  
                  $('html, body').animate({ scrollTop: $('#chapter11_verse20').offset().top }, 'normal');
 
@@ -50,7 +52,7 @@
 
     <div id="shell" class="shown shell">
         <div id="commandbar">
-            <input id="searchText" type="search" placeholder="bible text" />
+            <input id="searchText"  />
             <button onclick="onSearchBibleText()">OK</button>
         </div>
         <div id="workspace">

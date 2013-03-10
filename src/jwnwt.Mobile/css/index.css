@@ -23,10 +23,15 @@
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
 }
 
+ @font-face {
+            font-family: SEGOEUI;
+            src: url(/font/SEGOEUI.TTF);
+        }
+
 body {
     background-color:whitesmoke;   
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:18px;
+    font-family:SEGOEUI, Arial, sans-serif;
+    font-size:54px;
     height:100%;
     margin:0px;
     padding:0px;    
@@ -57,14 +62,6 @@ body {
     }
 }
 
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
-}
 
 .event {
     border-radius:4px;
@@ -122,15 +119,15 @@ h1 {
 }
 
 .shell {
-    padding:10px;    
+    padding:20px;    
 }
 
 .w_biblebookname {
     font-weight: bold;
-    font-size: 25px;
+    font-size: 75px;
 }
 
 .w_ch {
      font-weight: bold;
-    font-size: 20px;
+    font-size: 60px;
 }
