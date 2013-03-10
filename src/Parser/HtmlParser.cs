@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using HtmlAgilityPack;
@@ -51,7 +52,7 @@ namespace Parser
 
         }
 
-        private static void UsingXElement(string sourcePath, string destinationPath)
+        private void UsingXElement(string sourcePath, string destinationPath)
         {
             var xmlReader = new XmlTextReader(sourcePath) { DtdProcessing = DtdProcessing.Ignore, XmlResolver = null };
             var element = XElement.Load(xmlReader);
@@ -64,8 +65,8 @@ namespace Parser
                 bodyElement.ToString()
                            .Replace(@"<body xmlns=""http://www.w3.org/1999/xhtml"">", "<div>")
                            .Replace("</body>", "</div>")
-                           //.Replace(@"<a id=""", @"<div id=""")
-                           //.Replace("</a>", "</div>")
+                //.Replace(@"<a id=""", @"<div id=""")
+                //.Replace("</a>", "</div>")
                            ;
 
             var cleanBodyElementt = XElement.Parse(xml);
@@ -91,26 +92,31 @@ namespace Parser
                     stParagraph.SetValue(value);
 
                     //update the value fo the class as w_biblebookname
-                    stParagraph.Attribute("class").SetValue("w_biblebookname"); 
+                    stParagraph.Attribute("class").SetValue("w_biblebookname");
 
                 }
 
             }
 
-            var verse = cleanBodyElementt.Descendants()
-                                         .Where(m => m.Attribute("class") != null && m.Attribute("class").Value == "sb")
-                                         //.FirstOrDefault()
-                                         //.Descendants()
-                                         ;
-
-
-
+            SplitString(cleanBodyElementt.ToString());
 
             File.WriteAllText(destinationPath, cleanBodyElementt.ToString());
 
 
 
         }
+
+
+        private void SplitString(string input)
+        {
+            var pattern = @"<a id=""chapter\w*_verse\w*""></a>";
+            var result = Regex.Split(input, pattern, RegexOptions.IgnoreCase);
+
+            var matchCollection = Regex.Matches(input, pattern);
+
+        }
+
+
 
     }
 }
