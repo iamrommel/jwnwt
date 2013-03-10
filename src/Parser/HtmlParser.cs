@@ -41,8 +41,8 @@ namespace Parser
 
 
                 //this is is a temporary exit loop
-                //if (ctr >= 50)
-                //    break;
+                if (ctr >= 10)
+                    break;
             }
 
 
@@ -77,9 +77,6 @@ namespace Parser
             XElement removeAnchor = null;
             if (stParagraph != null)
             {
-              
-
-
 
                 //remove the BOLD TAG
                 removeAnchor = stParagraph
@@ -99,6 +96,12 @@ namespace Parser
                 }
 
             }
+
+            var verse = cleanBodyElementt.Descendants()
+                                         .Where(m => m.Attribute("class") != null && m.Attribute("class").Value == "sb")
+                                         //.FirstOrDefault()
+                                         //.Descendants()
+                                         ;
 
 
 

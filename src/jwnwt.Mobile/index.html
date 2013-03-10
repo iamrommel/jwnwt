@@ -14,15 +14,33 @@
 
 
         function onSearchBibleText() {
-             $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
+            $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
 
-                
-                 $("#chapter11_verse20").nextUntil("a")
-                        .toggleClass('selected');
-                 
-                 $('html, body').animate({ scrollTop: $('#chapter11_verse20').offset().top }, 'normal');
+                highligthText("#chapter11_verse20");
+                highligthText("#chapter11_verse21");
+                highligthText("#chapter11_verse22");
 
-             });
+                $('html, body').animate({ scrollTop: $('#chapter11_verse20').offset().top }, 'normal');
+
+            });
+        }
+
+
+        function highligthText(id) {
+
+
+            //this will select all those text in the paragraph and createe span
+            $(id).parent().contents().filter(function () {
+                return this.nodeType == 3;
+            })
+                .wrap('<span></span>')
+                .end();
+
+            $(id).parent().find('span')
+               .nextUntil("a")
+               .toggleClass('selected')
+            ;
+
         }
     </script>
 
@@ -31,11 +49,11 @@
 
 </head>
 <body>
-    <div class="app" id="app">
+    <!--  <div class="app" id="app">
             <h1>jw nwt</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">
-                    Connecting to Device
+                    loading the scriptures...
                 </p>
             </div>
         </div>
@@ -45,14 +63,14 @@
             <img src="img/bi12_E.jpg" class="image" />
 
         </div>
+-->
 
 
-    
 
 
     <div id="shell" class="shown shell">
         <div id="commandbar">
-            <input id="searchText"  />
+            <input id="searchText" />
             <button onclick="onSearchBibleText()">OK</button>
         </div>
         <div id="workspace">
