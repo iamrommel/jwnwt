@@ -15,7 +15,7 @@ namespace Parser
 
         public void Run()
         {
-            string langauge = @"en\";
+            string langauge = @"tg\";
             string sourcePath = @"C:\Personal\GitHub\jwnwt\lib\raw\" + langauge;
             string destinationPath = @"C:\Personal\Github\jwnwt\lib\html-template\" + langauge;
 
@@ -62,8 +62,8 @@ namespace Parser
 
             var xml =
                 bodyElement.ToString()
-                           .Replace(@"<body xmlns=""http://www.w3.org/1999/xhtml"">", "<book>")
-                           .Replace("</body>", "</book>");
+                           .Replace(@"<body xmlns=""http://www.w3.org/1999/xhtml"">", "<div>")
+                           .Replace("</body>", "</div>");
 
             var cleanBodyElementt = XElement.Parse(xml);
 
