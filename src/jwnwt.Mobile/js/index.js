@@ -38,7 +38,9 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
       
-        $(".received").css('style', 'display:block;');
+        $("#shell").attr('style', 'shown');
+
+        $("#imagebrowser").remove();
 
         $("#app").remove();
     }

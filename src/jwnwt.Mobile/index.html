@@ -5,28 +5,52 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <title>iamwallpaper</title>
+    <title>jw nwt</title>
     <script type="text/javascript" src="cordova-2.3.0.js"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-        app.initialize();
+        //app.initialize();
+
+
+        function onSearchBibleText() {
+            $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
+
+                $('html,body').animate({ scrollTop: $("#chapter1_verse14").offset().top }, 'slow');
+
+            });
+        }
     </script>
+
+
+
+
 </head>
 <body>
     <div class="app" id="app">
-        <h1>
-            jw nwt</h1>
+        <h1>jw nwt</h1>
         <div id="deviceready" class="blink">
             <p class="event listening">
-                Connecting to Device</p>
+                Connecting to Device
+            </p>
         </div>
     </div>
 
 
     <div id="imagebrowser" class="received">
         <img src="img/bi12_E.jpg" class="image" />
-       
+
     </div>
+
+    <div id="shell" class="shown">
+        <div id="commandbar">
+            <input id="searchText" type="search" placeholder="bible text" />
+            <button onclick="onSearchBibleText()">OK</button>
+        </div>
+        <div id="workspace">
+            <div id="injection"></div>
+        </div>
+    </div>
+
 </body>
 </html>
