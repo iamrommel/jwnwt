@@ -10,14 +10,14 @@
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-        app.initialize();
+        //app.initialize();
 
 
         function onSearchBibleText() {
             $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
 
-                $('html,body').animate({ scrollTop: $("#chapter1_verse14").offset().top }, 'slow');
-
+                $('#chapter1_verse14').parent().css('background-color', 'red');
+              
             });
         }
     </script>
@@ -27,7 +27,7 @@
 
 </head>
 <body>
-    <div class="app" id="app">
+    <!--<div class="app" id="app">
         <h1>jw nwt</h1>
         <div id="deviceready" class="blink">
             <p class="event listening">
@@ -40,7 +40,7 @@
     <div id="imagebrowser" class="received">
         <img src="img/bi12_E.jpg" class="image" />
 
-    </div>
+    </div>-->
 
     <div id="shell" class="shown">
         <div id="commandbar">
