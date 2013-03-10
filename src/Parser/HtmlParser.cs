@@ -20,6 +20,7 @@ namespace Parser
             string destinationPath = @"C:\Personal\Github\jwnwt\lib\html-template\" + langauge;
 
 
+
             var sourceFileNames = Directory.GetFiles(sourcePath);
             var totalFilesNames = sourceFileNames.Count();
             int ctr = 0;
