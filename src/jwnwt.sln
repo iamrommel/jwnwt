@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{05921C
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jwnwt.Mobile", "jwnwt.Mobile\jwnwt.Mobile.csproj", "{CE77450A-EC4E-4C57-94C8-007C51340DB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{D98CFA9B-46A0-4026-B173-7FEFB09ECD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D98CFA9B-46A0-4026-B173-7FEFB09ECD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D98CFA9B-46A0-4026-B173-7FEFB09ECD83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE77450A-EC4E-4C57-94C8-007C51340DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE77450A-EC4E-4C57-94C8-007C51340DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE77450A-EC4E-4C57-94C8-007C51340DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE77450A-EC4E-4C57-94C8-007C51340DB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
