@@ -10,15 +10,17 @@
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-        //app.initialize();
+        app.initialize();
 
 
         function onSearchBibleText() {
-            $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
+             $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
 
-                $('#chapter1_verse14').parent().css('background-color', 'red');
-              
-            });
+                 $('#chapter11_verse20').parent().toggleClass('selected');
+                 
+                 $('html, body').animate({ scrollTop: $('#chapter11_verse20').offset().top }, 'normal');
+
+             });
         }
     </script>
 
@@ -27,22 +29,26 @@
 
 </head>
 <body>
-    <!--<div class="app" id="app">
-        <h1>jw nwt</h1>
-        <div id="deviceready" class="blink">
-            <p class="event listening">
-                Connecting to Device
-            </p>
+    <div class="app" id="app">
+            <h1>jw nwt</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">
+                    Connecting to Device
+                </p>
+            </div>
         </div>
-    </div>
 
 
-    <div id="imagebrowser" class="received">
-        <img src="img/bi12_E.jpg" class="image" />
+        <div id="imagebrowser" class="received">
+            <img src="img/bi12_E.jpg" class="image" />
 
-    </div>-->
+        </div>
 
-    <div id="shell" class="shown">
+
+    
+
+
+    <div id="shell" class="shown shell">
         <div id="commandbar">
             <input id="searchText" type="search" placeholder="bible text" />
             <button onclick="onSearchBibleText()">OK</button>

@@ -24,20 +24,9 @@
 }
 
 body {
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
+    background-color:whitesmoke;   
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
+    font-size:18px;
     height:100%;
     margin:0px;
     padding:0px;    
@@ -125,4 +114,23 @@ h1 {
 
 .shown {
      display:block;
+}
+
+.selected {
+    font-weight: bold;
+    background-color: yellow
+}
+
+.shell {
+    padding:10px;    
+}
+
+.w_biblebookname {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.w_ch {
+     font-weight: bold;
+    font-size: 20px;
 }
