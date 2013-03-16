@@ -38,13 +38,13 @@ namespace Parser
                 if (!fileNameWithoutExtension.Contains("split"))
                     destinationFileName = string.Format("{0}-split1{1}", fileNameWithoutExtension, Path.GetExtension(fileName));
 
+                destinationFileName = string.Format("{0}{1}", SetFileName(destinationFileName), Path.GetExtension(fileName));
+                destinationFileName = destinationFileName.Replace("split", "");
+
                 var finalSource = string.Format(@"{0}{1}", sourcePath, sourceFileName);
                 var finalDesitnation = string.Format(@"{0}{1}", destinationPath, destinationFileName);
 
                 var stringResult = UsingXElement(finalSource, finalDesitnation);
-
-                //UsingSgmlReader(finalSource, finalDesitnation);
-                //UsingHtmlAgilityPack(finalSource, finalDesitnation);
 
                 File.WriteAllText(finalDesitnation, stringResult);
 
@@ -59,30 +59,6 @@ namespace Parser
 
         }
 
-        private void UsingSgmlReader(string sourcePath, string destinationPath)
-        {
-            using (TextReader reader = File.OpenText(sourcePath))
-            {
-                // setup SgmlReader
-                Sgml.SgmlReader sgmlReader = new Sgml.SgmlReader();
-                sgmlReader.DocType = "HTML";
-                sgmlReader.WhitespaceHandling = WhitespaceHandling.All;
-                sgmlReader.CaseFolding = Sgml.CaseFolding.ToLower;
-                sgmlReader.InputStream = reader;
-
-                // create document
-                XmlDocument doc = new XmlDocument();
-                doc.PreserveWhitespace = true;
-                doc.XmlResolver = null;
-                doc.Load(sgmlReader);
-
-
-                File.WriteAllText(destinationPath, doc.OuterXml);
-            }
-
-
-
-        }
 
         private string UsingXElement(string sourcePath, string destinationPath)
         {
@@ -119,15 +95,11 @@ namespace Parser
 
                 if (removeAnchor != null)
                 {
-                    //removeAnchor.Remove();
-                    ////after removal reset the value
+                    removeAnchor.Remove();
+                  
 
                     bibleName = stParagraph.Descendants().FirstOrDefault().Value;
-                    stParagraph.SetValue(bibleName);
-
-                    ////update the value fo the class as w_biblebookname
-                    //stParagraph.Attribute("class").SetValue("w_biblebookname");
-
+                   
                 }
 
             }
@@ -145,15 +117,13 @@ namespace Parser
             }
             else
             {
-                newBody = string.Format("<div><p>{0}</p>{1}</div>", bibleName, allVerseName);
+                newBody = string.Format(@"<div><p class=""biblename"">{0}</p>{1}</div>", bibleName, allVerseName);
             }
 
 
             return XElement.Parse(newBody).ToString();
 
         }
-
-
 
         private string SplitString(XElement source)
         {
@@ -182,40 +152,14 @@ namespace Parser
 
         }
 
-        private void UsingHtmlAgilityPack(string sourcePath, string destinationPath)
+
+        private string SetFileName(string destinationFileName)
         {
+            var pattern = @"\w*-split\d*";
+            var matchCollection = Regex.Matches(destinationFileName, pattern);
 
-            var xmlWriter = new XmlTextWriter(destinationPath, Encoding.UTF8);
-            string htmlString = UsingXElement(sourcePath, destinationPath);
+            return matchCollection[0].ToString();
 
-            HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-
-            // There are various options, set as needed
-            htmlDoc.OptionFixNestedTags = true;
-            htmlDoc.OptionOutputAsXml = true;
-
-
-            // filePath is a path to a file containing the html
-            //htmlDoc.Load(sourcePath);
-            htmlDoc.LoadHtml(htmlString);
-
-            // Use:  htmlDoc.LoadHtml(xmlString);  to load from a string (was htmlDoc.LoadXML(xmlString)
-
-            // ParseErrors is an ArrayList containing any errors from the Load statement
-            if (htmlDoc.ParseErrors != null && htmlDoc.ParseErrors.Count() > 0)
-            {
-                // Handle any parse errors as required
-
-            }
-            else
-            {
-                if (htmlDoc.DocumentNode != null)
-                {
-                    htmlDoc.DocumentNode.WriteTo(xmlWriter);
-                    xmlWriter.Flush();
-                    xmlWriter.Close();
-                }
-            }
         }
 
     }
