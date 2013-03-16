@@ -10,7 +10,9 @@ namespace Parser
         static void Main(string[] args)
         {
 
-            new HtmlParser().Run();
+            var parser = new HtmlParser();
+            //parser.Run();
+            parser.SetBookIndex();
         }
     }
 }
