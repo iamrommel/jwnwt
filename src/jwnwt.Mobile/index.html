@@ -8,40 +8,27 @@
     <title>jw nwt</title>
     <script type="text/javascript" src="cordova-2.3.0.js"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/linq.min.js"></script>
+    <script type="text/javascript" src="js/jquery.linq.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/knockout-2.2.1.js" ></script>
+    <script type="text/javascript" src="js/BookIndex.js" ></script>
+    <script type="text/javascript" src="js/BookNameViewModel.js"></script>
+
     <script type="text/javascript">
         app.initialize();
 
+        $(document).ready(function () {
+            var vm = new BookNameViewModel();
+           
 
-        function onSearchBibleText() {
-            $("#injection").load("template/tg/05_BI12_.GE-split11.xhtml", function () {
+            ko.applyBindings(vm);
 
-                highligthText("#chapter11_verse20");
-                highligthText("#chapter11_verse21");
-                highligthText("#chapter11_verse22");
-
-                $('html, body').animate({ scrollTop: $('#chapter11_verse20').offset().top }, 'normal');
-
-            });
-        }
+            vm.initialize();
 
 
-        function highligthText(id) {
-
-
-            //this will select all those text in the paragraph and createe span
-            $(id).parent().contents().filter(function () {
-                return this.nodeType == 3;
-            })
-                .wrap('<span></span>')
-                .end();
-
-            $(id).parent().find('span')
-               .nextUntil("a")
-               .toggleClass('selected')
-            ;
-
-        }
+        });
+         
     </script>
 
 
@@ -70,8 +57,14 @@
 
     <div id="shell" class="shown shell">
         <div id="commandbar">
+            <div>
+                <ul data-bind="foreach: bookNames" id="bookNames">
+                    <li data-bind="text: $data"></li>
+                </ul>
+            </div>
+
             <input id="searchText" />
-            <button onclick="onSearchBibleText()">OK</button>
+          
         </div>
         <div id="workspace">
             <div id="injection"></div>
@@ -79,4 +72,7 @@
     </div>
 
 </body>
+    
+    
+
 </html>

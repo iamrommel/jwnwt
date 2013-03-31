@@ -7,19 +7,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using HtmlAgilityPack;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace Parser
 {
     public class HtmlParser
     {
-
-
-        private string sourcePath = @"C:\Personal\GitHub\jwnwt\lib\raw\tg\";
-        private string destinationPath = @"C:\Personal\Github\jwnwt\src\jwnwt.Mobile\template\tg\";
-        private string scriptPath = @"C:\Personal\Github\jwnwt\src\jwnwt.Mobile\js\";
+        private const string SourcePath = @"C:\Personal\GitHub\jwnwt\lib\raw\tg\";
+        private const string DestinationPath = @"C:\Personal\Github\jwnwt\src\jwnwt.Mobile\template\tg\";
+        private const string ScriptPath = @"C:\Personal\Github\jwnwt\src\jwnwt.Mobile\js\";
 
 
         public void Run()
@@ -27,20 +23,22 @@ namespace Parser
 
 
 
-            var sourceFileNames = Directory.GetFiles(sourcePath).OrderBy(m => m);
+            var sourceFileNames = Directory.GetFiles(SourcePath).OrderBy(m => m);
             var totalFilesNames = sourceFileNames.Count();
             int ctr = 0;
 
             foreach (var fileName in sourceFileNames)
             {
 
+                //if (!fileName.Equals(@"C:\Personal\GitHub\jwnwt\lib\raw\tg\22_BI12_.JOB-split29.xhtml", StringComparison.InvariantCultureIgnoreCase))
+                //    continue;
 
                 ctr++;
 
                 Console.WriteLine(string.Format("Doing {0} out of {1}, for file {2}", ctr, totalFilesNames, fileName));
 
                 var sourceFileName = Path.GetFileName(fileName);
-                var finalSource = string.Format(@"{0}{1}", sourcePath, sourceFileName);
+                var finalSource = string.Format(@"{0}{1}", SourcePath, sourceFileName);
 
                 int count;
                 var stringResult = UsingXElement(finalSource, out count);
@@ -56,7 +54,7 @@ namespace Parser
                 destinationFileName = string.Format("{0}-{1}{2}", SetFileName(destinationFileName), count, Path.GetExtension(fileName));
                 destinationFileName = destinationFileName.Replace("split", "");
 
-                var finalDesitnation = string.Format(@"{0}{1}", destinationPath, destinationFileName);
+                var finalDesitnation = string.Format(@"{0}{1}", DestinationPath, destinationFileName);
                 File.WriteAllText(finalDesitnation, stringResult);
 
                 //this is is a temporary exit loop
@@ -74,70 +72,81 @@ namespace Parser
         public void SetBookIndex()
         {
             //-08-1CH-13-33.xhtml
-            var destinationFileName = Directory.GetFiles(destinationPath);
+            var destinationFileName = Directory.GetFiles(DestinationPath);
             var bookNames = destinationFileName.Select(m =>
             {
                 var fileName = Path.GetFileNameWithoutExtension(m);
                 var items = fileName.Split('-');
                 var chapterIndex = int.Parse(items[2]);
                 var upperVerse = int.Parse(items[3]);
-                var chaptersVerses = new List<ChapterVerse>() { 
-                    new ChapterVerse()
-                    {
-                        Chapter = chapterIndex,
-                        UpperVerse = upperVerse
-                    }};
+
 
                 var result = new BookIndex()
                 {
                     Code = items[1],
-                    Chapters = chaptersVerses,
+                    Chapter = chapterIndex,
+                    MaximumVerseOfChapter = upperVerse,
                     TraditionalOrder = int.Parse(items[0]),
                 };
-
-
-
-
                 return result;
-            })
-            ;
+            }).ToList();
 
-            var uniqueBooks = bookNames.OrderBy(m => m.TraditionalOrder);
+            //get the maximum chapter of the  book
+            var groupBookNames = bookNames.GroupBy(m => m.Code)
+                                          .Select(m => new
+                                              {
+                                                  Key = m.FirstOrDefault(),
+                                                  MaxChapter = m.Max(u => u.Chapter)
+                                              }).ToList();
 
+            //update the MaxChapter of the book
+            foreach (var bookName in bookNames)
+            {
+                bookName.MaximumChapterOfBook =
+                    groupBookNames.FirstOrDefault(m => m.Key.Code == bookName.Code).MaxChapter;
 
-            //var uniqueBooks = bookNames.Distinct(new BookIndexEqualityComparer())
-            //    .Select(m =>
-            //    {
-            //        var maxChapter = bookNames.Max(n => n.UpperChapter);
-            //        string biblename = "Bible Name here";
-            //        //get the booknames
-            //        //var bookPath = string.Format("{0}{1}-1.xhtml", destinationPath, m.Code);
-            //        //var xmlReader = new XmlTextReader(bookPath) { DtdProcessing = DtdProcessing.Ignore, XmlResolver = null };
-            //        //var element = XElement.Load(xmlReader);
-            //        //  biblename = element.Descendants()
-            //        //    .FirstOrDefault(u => u.Name.LocalName.Equals("p", StringComparison.InvariantCultureIgnoreCase))
-            //        //    .Value;
+            }
 
-            //            var result = new List<ChapterVerse>();
-
-            //            for (int i = 1; i <= maxChapter; i++)
-            //            {
-            //                result.Add(new ChapterVerse() { Chapter = i });
-            //            }
-
-
-            //        return new BookIndex() { Code = m.Code, UpperChapter = maxChapter, Name = biblename };
-
-            //    })
-            //    ;
+            //get the book names
+            var firstChapterOfTheBooks = bookNames.Where(m => m.Chapter == 1);
+            foreach (var firstChapterOfTheBook in firstChapterOfTheBooks)
+            {
+                var filename = string.Format("{0}{1}-{2}-{3}-{4}.xhtml", DestinationPath,
+                                firstChapterOfTheBook.TraditionalOrder.ToString().PadLeft(2, '0'),
+                                firstChapterOfTheBook.Code,
+                                firstChapterOfTheBook.Chapter,
+                                firstChapterOfTheBook.MaximumVerseOfChapter);
 
 
+                var xmlReader = new XmlTextReader(filename) { DtdProcessing = DtdProcessing.Ignore, XmlResolver = null };
+                var element = XElement.Load(xmlReader);
+
+                //get the element with "biblename" class value
+
+                var bibleName = element.Descendants()
+                                       .FirstOrDefault(n => n.Attribute("class").Value == "biblename").Value;
+
+                //update the name for of thhe current book all remaining chapters
+                foreach (var bookName in bookNames)
+                {
+                    if (bookName.Code == firstChapterOfTheBook.Code)
+                        bookName.Name = bibleName;
+                }
+            }
 
 
 
-            var jsonResult = JsonConvert.SerializeObject(uniqueBooks.ToList());
+            //order the book by traditional order then by chapter
+            var finalResult = bookNames.OrderBy(m => m.TraditionalOrder).ThenBy(m => m.MaximumChapterOfBook);
 
-            File.WriteAllText(string.Format("{0}tg-bookindex.json", scriptPath), jsonResult);
+
+            var preValue = "var bookIndex =  ";
+            var mainValue = JsonConvert.SerializeObject(finalResult);
+            var postValue =  ";";
+            var jsonResult = string.Format("{0}{1}{2}", preValue, mainValue, postValue);
+
+
+            File.WriteAllText(string.Format("{0}tg-bookindex.js", ScriptPath), jsonResult);
 
 
         }
@@ -158,6 +167,7 @@ namespace Parser
                            .Replace("</body>", "</div>")
                             .Replace(@"<a id=""", @"<div id=""")
                             .Replace("</a>", "</div>")
+                            .Replace(@"<p class=""sl"">", @"<p class=""sb"">")
                             .Replace(@"\r\n", "")
                                        ;
 
@@ -255,62 +265,4 @@ namespace Parser
         #endregion
 
     }
-
-    [DataContract]
-    public class BookIndex
-    {
-        [DataMember(Name = "c")]
-        public string Code { get; set; }
-
-        [DataMember(Name = "n")]
-        public string Name { get; set; }
-
-        [DataMember(Name = "cp")]
-        public List<ChapterVerse> Chapters
-        {
-            get;
-            set;
-
-        }
-
-        [DataMember(Name = "to")]
-        public int TraditionalOrder { get; set; }
-         
-    }
-
-    [DataContract]
-    public class ChapterVerse
-    {
-        [DataMember(Name = "cpc")]
-        public int Chapter { get; set; }
-
-
-        [DataMember(Name = "cpu")]
-        public int UpperVerse { get { return 20; } set { } }
-    }
-
-    class BookIndexEqualityComparer : IEqualityComparer<BookIndex>
-    {
-
-        public bool Equals(BookIndex b1, BookIndex b2)
-        {
-            if (b1.Code == b2.Code)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        public int GetHashCode(BookIndex bx)
-        {
-            //int hCode =  bx.Code.GetHashCode() ^  bx.UpperChapter ^ bx.UpperVerse;
-            return bx.Code.GetHashCode();
-        }
-
-    }
-
 }

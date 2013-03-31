@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookIndex.cs" />
+    <Compile Include="BookIndexEqualityComparer.cs" />
+    <Compile Include="ChapterVerse.cs" />
     <Compile Include="ExtensionMethod.cs" />
     <Compile Include="HtmlParser.cs" />
     <Compile Include="Program.cs" />
